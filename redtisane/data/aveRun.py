@@ -6,18 +6,19 @@ import glob
 class AveragedRun():
   def __init__(self, folderPath, logger=None, *args):
     self.aveFiles = []
-    self.aveData = {}
+    self.aveData = []
 
     self.summedData = []
-    self.aveData = {}
 
     # init the logger or use passed one
     self.log = Logger() if logger is None else logger
 
-    if len(args) > 0:
+    if len(args) > 0 and ('[]' in folderPath):
       for addArgument in args:
         idx = folderPath.find('[]')
         self.folderPath = folderPath[:idx] + str(addArgument) + folderPath[idx+2:]
+    else:
+      self.folderPath = folderPath
     print(self.folderPath)
     self.load_folder()
 
@@ -26,8 +27,8 @@ class AveragedRun():
     self.log.printLog(f'Loading folder: {self.folderPath}')
     self.aveFiles = sorted(glob.glob(self.folderPath))
     self.log.addShift()
-    for file in self.aveFiles:
-      self.aveData[file] = AveData(file, self.log)
+    for i in range(len(self.aveFiles)):
+      self.aveData.append(AveData(self.aveFiles[i], self.log))
     self.log.removeShift()
 
     self.nFiles = len(self.aveFiles)
@@ -40,9 +41,9 @@ class AveragedRun():
     self.summedData = []
     for i in range(sumEvery):
       self.summedData.append(AveData())
-      self.summedData[i].phi = self.aveData[self.aveFiles[i]].phi
+      self.summedData[i].phi = self.aveData[i].phi
       for j in range(self.nSummedFiles):
-        addData = self.aveData[self.aveFiles[i+j*sumEvery]]
+        addData = self.aveData[i+j*sumEvery]
         self.summedData[i].I += addData.I
         self.summedData[i].sI += addData.sI**2
       self.summedData[i].sI = np.sqrt(self.summedData[i].sI)
