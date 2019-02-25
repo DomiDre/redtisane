@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from distutils.core import setup, Extension
 
 
 with open('README.md') as f:
@@ -9,7 +10,7 @@ with open('LICENSE') as f:
 
 setup(
   name='redtisane',
-  version='0.0.1',
+  version='0.0.2',
   description='Reduction Script for TISANE data of NIST',
   url='https://github.com/DomiDre/redtisane',
   author='Dominique Dresen',
@@ -30,5 +31,6 @@ setup(
       'examples'
       )
   ),
+  ext_modules=[Extension('helloworld', ['./redtisane/utils/readEvents.c'])],
   keywords='tisane nist sans reduction'
 )
