@@ -10,7 +10,7 @@ with open('LICENSE') as f:
 
 setup(
   name='redtisane',
-  version='0.0.2',
+  version='0.0.3',
   description='Reduction Script for TISANE data of NIST',
   url='https://github.com/DomiDre/redtisane',
   author='Dominique Dresen',
